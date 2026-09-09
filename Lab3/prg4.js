@@ -1,6 +1,8 @@
 import http from 'http';
 
 const server = http.createServer((req, res) => {
+    console.log("Method:", req.method);
+    console.log("URL:", req.url);
     if (req.url === '/api/products') {
         res.end(JSON.stringify({
             id: 1,
