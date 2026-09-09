@@ -1,24 +1,18 @@
 import http from 'http';
 
 const server = http.createServer((req, res) => {
-
-    if (req.url == '/api/products') {
-
-        const product = {
+    if (req.url === '/api/products') {
+        res.end(JSON.stringify({
             id: 1,
             name: 'Mobile',
-            price: 4000,
+            price: '40000',
             rating: 4.7,
             review: 225
-        };
-
-        res.end(JSON.stringify(product));
-        return;
+        }));
+    } else {
+        res.statusCode = 404;
+        res.end();
     }
-
-    res.end('Hello Server');
 });
 
-server.listen(3000, () => {
-    console.log('PRG4 is running at http://localhost:3000');
-});
+server.listen(3000, () => console.log('prg4 is running'));
