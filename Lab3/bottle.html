@@ -1,0 +1,850 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Music Player</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f0f0f;
+            color: white;
+        }
+
+        /* NAVBAR */
+        nav {
+            height: 70px;
+            background: #181818;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1db954;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            color: #1db954;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 380px;
+            padding: 70px 7%;
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.5),
+                    rgba(0,0,0,0.8)
+                ),
+                linear-gradient(135deg, #1db954, #191414);
+        }
+
+        .hero h1 {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 19px;
+            color: #ddd;
+            margin-bottom: 25px;
+        }
+
+        .hero button {
+            padding: 13px 25px;
+            border: none;
+            border-radius: 30px;
+            background: #1db954;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .hero button:hover {
+            background: #1ed760;
+            transform: scale(1.05);
+        }
+
+        /* MAIN */
+        .container {
+            width: 86%;
+            margin: 40px auto 150px;
+        }
+
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .heading h2 {
+            font-size: 30px;
+        }
+
+        /* SEARCH */
+        #search {
+            background: #242424;
+            border: none;
+            outline: none;
+            padding: 12px 18px;
+            border-radius: 25px;
+            color: white;
+            width: 220px;
+        }
+
+        /* SONG LIST */
+        .song-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .song {
+            background: #181818;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .song:hover {
+            background: #282828;
+        }
+
+        .song.active {
+            background: #1db954;
+        }
+
+        .cover {
+            width: 55px;
+            height: 55px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #1db954, #8e44ad);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 23px;
+        }
+
+        .song-info {
+            flex: 1;
+        }
+
+        .song-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .song-info p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .duration {
+            color: #aaa;
+        }
+
+        /* PLAYER */
+        .player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: #181818;
+            border-top: 1px solid #333;
+            display: flex;
+            align-items: center;
+            padding: 15px 5%;
+            z-index: 1000;
+        }
+
+        .now-playing {
+            width: 25%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .now-playing .cover {
+            width: 55px;
+            height: 55px;
+        }
+
+        .now-playing h4 {
+            margin-bottom: 5px;
+        }
+
+        .now-playing p {
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        /* CONTROLS */
+        .controls {
+            width: 50%;
+            text-align: center;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 22px;
+            margin-bottom: 10px;
+        }
+
+        .buttons button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .buttons .play {
+            background: white;
+            color: black;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+        }
+
+        .progress-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-area span {
+            font-size: 12px;
+            color: #aaa;
+            width: 40px;
+        }
+
+        #progress {
+            flex: 1;
+            accent-color: #1db954;
+            cursor: pointer;
+        }
+
+        /* VOLUME */
+        .volume {
+            width: 25%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #volume {
+            width: 100px;
+            accent-color: #1db954;
+        }
+
+        /* MOBILE */
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            nav ul {
+                gap: 12px;
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 50px 7%;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .heading {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            #search {
+                width: 100%;
+            }
+
+            .player {
+                height: 130px;
+                flex-wrap: wrap;
+            }
+
+            .now-playing {
+                width: 100%;
+            }
+
+            .controls {
+                width: 75%;
+            }
+
+            .volume {
+                width: 25%;
+            }
+
+            #volume {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+
+        <div class="logo">
+            🎵 MyMusic
+        </div>
+
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#songs">Songs</a></li>
+            <li><a href="#player">Player</a></li>
+        </ul>
+
+    </nav>
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div>
+            <h1>Feel The Music 🎧</h1>
+
+            <p>
+                Listen to your favorite songs anytime, anywhere.
+            </p>
+
+            <button onclick="playSong(0)">
+                ▶ Start Listening
+            </button>
+        </div>
+
+    </section>
+
+
+    <!-- SONG SECTION -->
+    <main class="container" id="songs">
+
+        <div class="heading">
+
+            <h2>Popular Songs</h2>
+
+            <input
+                type="text"
+                id="search"
+                placeholder="🔍 Search song..."
+                onkeyup="searchSongs()"
+            >
+
+        </div>
+
+
+        <div class="song-list" id="songList">
+
+            <!-- SONG 1 -->
+            <div class="song" onclick="playSong(0)">
+
+                <div class="cover">
+                    🎵
+                </div>
+
+                <div class="song-info">
+                    <h3>Perfect</h3>
+                    <p>Ed Sheeran</p>
+                </div>
+
+                <div class="duration">
+                    4:23
+                </div>
+
+            </div>
+
+
+            <!-- SONG 2 -->
+            <div class="song" onclick="playSong(1)">
+
+                <div class="cover">
+                    🎶
+                </div>
+
+                <div class="song-info">
+                    <h3>Believer</h3>
+                    <p>Imagine Dragons</p>
+                </div>
+
+                <div class="duration">
+                    3:24
+                </div>
+
+            </div>
+
+
+            <!-- SONG 3 -->
+            <div class="song" onclick="playSong(2)">
+
+                <div class="cover">
+                    🎧
+                </div>
+
+                <div class="song-info">
+                    <h3>Shape of You</h3>
+                    <p>Ed Sheeran</p>
+                </div>
+
+                <div class="duration">
+                    3:53
+                </div>
+
+            </div>
+
+
+            <!-- SONG 4 -->
+            <div class="song" onclick="playSong(3)">
+
+                <div class="cover">
+                    🎼
+                </div>
+
+                <div class="song-info">
+                    <h3>Let Me Down Slowly</h3>
+                    <p>Alec Benjamin</p>
+                </div>
+
+                <div class="duration">
+                    2:49
+                </div>
+
+            </div>
+
+
+            <!-- SONG 5 -->
+            <div class="song" onclick="playSong(4)">
+
+                <div class="cover">
+                    🎤
+                </div>
+
+                <div class="song-info">
+                    <h3>Night Changes</h3>
+                    <p>One Direction</p>
+                </div>
+
+                <div class="duration">
+                    3:46
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- MUSIC PLAYER -->
+
+    <div class="player" id="player">
+
+        <!-- CURRENT SONG -->
+        <div class="now-playing">
+
+            <div class="cover">
+                🎵
+            </div>
+
+            <div>
+                <h4 id="currentTitle">
+                    Select a Song
+                </h4>
+
+                <p id="currentArtist">
+                    Artist
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- CONTROLS -->
+        <div class="controls">
+
+            <div class="buttons">
+
+                <button onclick="previousSong()">
+                    ⏮
+                </button>
+
+                <button
+                    class="play"
+                    id="playBtn"
+                    onclick="togglePlay()"
+                >
+                    ▶
+                </button>
+
+                <button onclick="nextSong()">
+                    ⏭
+                </button>
+
+            </div>
+
+
+            <div class="progress-area">
+
+                <span id="currentTime">
+                    0:00
+                </span>
+
+                <input
+                    type="range"
+                    id="progress"
+                    value="0"
+                    min="0"
+                    max="100"
+                >
+
+                <span id="duration">
+                    0:00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- VOLUME -->
+        <div class="volume">
+
+            🔊
+
+            <input
+                type="range"
+                id="volume"
+                min="0"
+                max="1"
+                step="0.01"
+                value="1"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- AUDIO -->
+    <audio id="audio"></audio>
+
+
+    <script>
+
+        /* SONG DATA */
+
+        const songs = [
+
+            {
+                title: "Perfect",
+                artist: "Ed Sheeran",
+                file: "perfect.mp3"
+            },
+
+            {
+                title: "Believer",
+                artist: "Imagine Dragons",
+                file: "believer.mp3"
+            },
+
+            {
+                title: "Shape of You",
+                artist: "Ed Sheeran",
+                file: "shapeofyou.mp3"
+            },
+
+            {
+                title: "Let Me Down Slowly",
+                artist: "Alec Benjamin",
+                file: "letmedownslowly.mp3"
+            },
+
+            {
+                title: "Night Changes",
+                artist: "One Direction",
+                file: "nightchanges.mp3"
+            }
+
+        ];
+
+
+        let currentSong = 0;
+
+        const audio = document.getElementById("audio");
+
+        const playBtn = document.getElementById("playBtn");
+
+        const progress = document.getElementById("progress");
+
+        const volume = document.getElementById("volume");
+
+        const currentTitle =
+            document.getElementById("currentTitle");
+
+        const currentArtist =
+            document.getElementById("currentArtist");
+
+        const currentTime =
+            document.getElementById("currentTime");
+
+        const duration =
+            document.getElementById("duration");
+
+
+        /* PLAY SONG */
+
+        function playSong(index) {
+
+            currentSong = index;
+
+            let song = songs[currentSong];
+
+            audio.src = song.file;
+
+            currentTitle.innerText = song.title;
+
+            currentArtist.innerText = song.artist;
+
+            audio.play();
+
+            playBtn.innerText = "⏸";
+
+            updateActiveSong();
+        }
+
+
+        /* PLAY / PAUSE */
+
+        function togglePlay() {
+
+            if (!audio.src) {
+
+                playSong(0);
+
+                return;
+            }
+
+
+            if (audio.paused) {
+
+                audio.play();
+
+                playBtn.innerText = "⏸";
+
+            } else {
+
+                audio.pause();
+
+                playBtn.innerText = "▶";
+            }
+        }
+
+
+        /* NEXT SONG */
+
+        function nextSong() {
+
+            currentSong++;
+
+            if (currentSong >= songs.length) {
+
+                currentSong = 0;
+            }
+
+            playSong(currentSong);
+        }
+
+
+        /* PREVIOUS SONG */
+
+        function previousSong() {
+
+            currentSong--;
+
+            if (currentSong < 0) {
+
+                currentSong = songs.length - 1;
+            }
+
+            playSong(currentSong);
+        }
+
+
+        /* UPDATE PROGRESS */
+
+        audio.addEventListener("timeupdate", function() {
+
+            if (audio.duration) {
+
+                let percentage =
+                    (audio.currentTime / audio.duration) * 100;
+
+                progress.value = percentage;
+
+                currentTime.innerText =
+                    formatTime(audio.currentTime);
+
+                duration.innerText =
+                    formatTime(audio.duration);
+            }
+
+        });
+
+
+        /* CHANGE SONG POSITION */
+
+        progress.addEventListener("input", function() {
+
+            if (audio.duration) {
+
+                audio.currentTime =
+                    (progress.value / 100) * audio.duration;
+            }
+
+        });
+
+
+        /* VOLUME */
+
+        volume.addEventListener("input", function() {
+
+            audio.volume = volume.value;
+
+        });
+
+
+        /* SONG FINISHED */
+
+        audio.addEventListener("ended", function() {
+
+            nextSong();
+
+        });
+
+
+        /* FORMAT TIME */
+
+        function formatTime(seconds) {
+
+            let minutes =
+                Math.floor(seconds / 60);
+
+            let secs =
+                Math.floor(seconds % 60);
+
+            if (secs < 10) {
+
+                secs = "0" + secs;
+            }
+
+            return minutes + ":" + secs;
+        }
+
+
+        /* ACTIVE SONG */
+
+        function updateActiveSong() {
+
+            let allSongs =
+                document.querySelectorAll(".song");
+
+            allSongs.forEach(function(song, index) {
+
+                song.classList.remove("active");
+
+                if (index === currentSong) {
+
+                    song.classList.add("active");
+                }
+
+            });
+
+        }
+
+
+        /* SEARCH */
+
+        function searchSongs() {
+
+            let search =
+                document.getElementById("search")
+                .value
+                .toLowerCase();
+
+            let allSongs =
+                document.querySelectorAll(".song");
+
+
+            allSongs.forEach(function(song) {
+
+                let text =
+                    song.innerText.toLowerCase();
+
+                if (text.includes(search)) {
+
+                    song.style.display = "flex";
+
+                } else {
+
+                    song.style.display = "none";
+                }
+
+            });
+
+        }
+
+    </script>
+
+</body>
+</html>
+```

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Matka</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff8ef;
+            color: #3b2115;
+        }
+
+        /* Navbar */
+        nav {
+            background: #8b451f;
+            color: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            font-family: Georgia, serif;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 50px 8%;
+        }
+
+        .content {
+            max-width: 500px;
+        }
+
+        .content h1 {
+            font-family: Georgia, serif;
+            font-size: 55px;
+            margin-bottom: 20px;
+        }
+
+        .content h1 span {
+            color: #a94f22;
+        }
+
+        .content p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #705548;
+            margin-bottom: 25px;
+        }
+
+        button {
+            background: #a94f22;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #743515;
+        }
+
+        /* Pot */
+        .pot-area {
+            width: 350px;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pot {
+            width: 280px;
+            height: 300px;
+            position: relative;
+
+            /* Round clay pot */
+            background: linear-gradient(
+                90deg,
+                #91451f,
+                #c66b38,
+                #d9844b,
+                #b85b2d,
+                #863c1c
+            );
+
+            border-radius: 45% 45% 35% 35% / 35% 35% 65% 65%;
+
+            box-shadow:
+                15px 20px 30px rgba(70, 30, 10, 0.3);
+        }
+
+        /* Pot neck */
+        .pot::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 65px;
+            background: #a95127;
+            top: -45px;
+            left: 75px;
+            border-radius: 50% 50% 20% 20%;
+        }
+
+        /* Pot opening */
+        .pot::after {
+            content: "";
+            position: absolute;
+            width: 105px;
+            height: 25px;
+            background: #5d2c18;
+            top: -48px;
+            left: 88px;
+            border-radius: 50%;
+            border: 7px solid #d47b43;
+        }
+
+        /* Indian decoration */
+        .design {
+            position: absolute;
+            top: 105px;
+            left: 35px;
+            width: 210px;
+            text-align: center;
+            padding: 15px 0;
+            border-top: 4px solid #f2c08c;
+            border-bottom: 4px solid #f2c08c;
+            color: #ffe0b8;
+            font-size: 25px;
+            letter-spacing: 8px;
+        }
+
+        /* Smart display */
+        .display {
+            position: absolute;
+            z-index: 2;
+            top: 170px;
+            left: 90px;
+
+            width: 100px;
+            height: 60px;
+
+            background: #202020;
+            color: #6cff9b;
+
+            border-radius: 10px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow: inset 0 0 8px black;
+        }
+
+        .display strong {
+            font-size: 18px;
+        }
+
+        .display small {
+            font-size: 10px;
+        }
+
+        /* Features */
+        .features {
+            padding: 70px 8%;
+            background: #f2dfc8;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-family: Georgia, serif;
+            font-size: 38px;
+            margin-bottom: 40px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #98461f;
+        }
+
+        .card p {
+            color: #705548;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: #3b2115;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        /* Mobile */
+        @media (max-width: 800px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .content h1 {
+                font-size: 42px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <h2>🏺 Smart Matka</h2>
+
+        <div>
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+
+        <div class="content">
+
+            <h1>
+                Pure Water.<br>
+                <span>Pure Tradition.</span>
+            </h1>
+
+            <p>
+                A traditional Indian मिट्टी का घड़ा enhanced
+                with smart technology. Enjoy naturally cool
+                water while monitoring temperature and water
+                level.
+            </p>
+
+            <button onclick="learnMore()">
+                Explore Now
+            </button>
+
+        </div>
+
+
+        <!-- Clay Pot -->
+        <div class="pot-area">
+
+            <div class="pot">
+
+                <div class="design">
+                    ◆ ✦ ◆
+                </div>
+
+                <div class="display">
+                    <strong>24°C</strong>
+                    <small>Temperature</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Features -->
+    <section class="features" id="features">
+
+        <h2>Why Smart Matka?</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">💧</div>
+
+                <h3>Natural Cooling</h3>
+
+                <p>
+                    Traditional clay naturally keeps
+                    drinking water cool.
+                </p>
+            </div>
+
+
+            <div class="card">
+                <div class="icon">🌡️</div>
+
+                <h3>Temperature Sensor</h3>
+
+                <p>
+                    Check the current water temperature
+                    using the smart display.
+                </p>
+            </div>
+
+
+            <div class="card">
+                <div class="icon">📱</div>
+
+                <h3>Smart Technology</h3>
+
+                <p>
+                    Connect the pot to your smartphone
+                    and monitor your water.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Contact -->
+    <section class="features" id="contact">
+
+        <h2>Bring Tradition Home</h2>
+
+        <p>
+            Modern technology inspired by India's timeless
+            earthen-pot tradition.
+        </p>
+
+        <br>
+
+        <button onclick="buyNow()">
+            Buy Smart Matka
+        </button>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <h3>🏺 Smart Matka</h3>
+        <p>Tradition meets technology.</p>
+        <br>
+        <p>© 2026 Smart Matka</p>
+    </footer>
+
+
+    <script>
+
+        function learnMore() {
+            document.getElementById("features").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        function buyNow() {
+            alert("Thank you for choosing Smart Matka! 🏺💧");
+        }
+
+    </script>
+
+</body>
+</html>
