@@ -77,3 +77,12 @@ reviews : 321
 ```
 
 
+## Headers
+- headers is used to tell client the tyope of data send by the server . it may be HTML files,JSON data      plain ,text files , CSS files any tokens(for login) 
+
+1. text/plain -> text file
+2. text/html -> html contents/files 
+3. application/json -> contents/file
+4. text/css -> stylesheet
+5. application/auth -> for tokens 
+   the headers can be set by  res object at server side by two ways
