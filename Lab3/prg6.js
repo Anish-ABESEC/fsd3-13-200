@@ -1,44 +1,47 @@
-import http from 'http'
+import http from 'http';
 
 const server = http.createServer((req, res) => {
-   
-    if (req.url === "/" && req.method === "GET") {
-        res.statusCode = 200;
-        res.end("GET Request");
-    }
 
-    else if (req.url === "/" && req.method === "POST") {
-        //console.log("Request:", req);
-        let body = ' '
-        req.on('data', (chunk) => {
-            body += chunk
+    // Echo API - POST
+    if (req.url === "/api/v1/echo" && req.method === "POST") {
 
-        })
-        req.on("end", () => {
-            const product = JSON.parse(body);
-            console.log("received products:", product);
-            res.statusCode = 201;
-        res.end(JSON.stringify({msg:'product added',product}));
+        let body = "";
+
+        req.on("data", (chunk) => {
+            body += chunk;
         });
-        
-    }
 
-    else if (req.url === "/" && req.method === "PUT") {
-        res.statusCode = 200;
-        res.end("PUT Request");
-    }
+        req.on("end", () => {
 
-    else if (req.url === "/" && req.method === "DELETE") {
-        res.statusCode = 200;
-        res.end("DELETE Request");
-    }
+            try {
+                const data = JSON.parse(body);
 
-    else {
+                res.statusCode = 200;
+                res.setHeader("Content-Type", "application/json");
+
+                res.end(JSON.stringify({
+                    message: "Echo API",
+                    data: data
+                }));
+
+            } catch (error) {
+
+                res.statusCode = 400;
+                res.setHeader("Content-Type", "application/json");
+
+                res.end(JSON.stringify({
+                    message: "Invalid JSON"
+                }));
+            }
+        });
+
+    } else {
+
         res.statusCode = 404;
         res.end("Request not found");
     }
 });
 
-server.listen(5000, () => console.log("prg6 is running"));
-
-
+server.listen(5000, () => {
+    console.log("prg6.js is running on port 5000");
+});
